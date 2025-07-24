@@ -1,0 +1,77 @@
+(SEE MORE    https://copilot.microsoft.com/chats/Gk7AudbUn9KQKaG6Q8ueq
+)
+
+SYMBOL STYLES HOWTO
+
+public
+code <use href="#starIcon" fill="red"/> does not fill star icon with red color
+
+Gemini
+You are correct, applying fill="red" directly to the <use> element referencing a #starIcon symbol might not work as expected for several reasons:
+
+CSS Specificity and Inheritance: Styles defined within the <symbol> element itself often have higher specificity than styles applied to the <use> element. This means the fill property on the <symbol> might be overriding the fill on the <use>.
+SVG Fragment Identifiers: When using a fragment identifier like #starIcon, you are essentially referencing a part of the SVG document. Styles applied to the <use> element might apply to the <use> element itself, but not necessarily to the elements within the referenced symbol.
+Shadow DOM: In some implementations, the content referenced by a <use> element can behave like a shadow DOM, which can limit the ability to style its internal elements directly from the outside.
+Here are a few ways to correctly style the referenced star icon with red:
+
+Apply the fill to the elements within the <symbol>: The most reliable way is to define the fill color directly on the path or other shape elements inside your starIcon symbol definition in your icons.svg file.
+
+<symbol id="starIcon" viewBox="0 0 24 24">
+        <path d="..." fill="red"/> 
+    </symbol>
+
+
+Use CSS with the fill property: You can use CSS to style the use element. This might require targeting the use element more specifically, perhaps with a class. However, this method can still be subject to the specificity issues mentioned above.
+
+.red-star use {
+        fill: red;
+    }
+
+
+Then in your HTML:
+
+
+<svg width="100" height="100" class="red-star">
+      <use href="#starIcon"/>
+    </svg>
+
+
+Using CSS Custom Properties (Variables): If you need more dynamic control over the fill color, you can use CSS custom properties within your SVG.
+
+In icons.svg:
+
+<symbol id="starIcon" viewBox="0 0 24 24">
+        <path d="..." fill="var(--star-fill, currentColor)"/> 
+    </symbol>
+
+
+In your HTML or CSS:
+
+
+<svg width="100" height="100" style="--star-fill: red;">
+      <use href="#starIcon"/>
+    </svg>
+
+
+or in CSS:
+
+
+.red-star {
+        --star-fill: red;
+    }
+
+
+and in HTML:
+
+
+<svg width="100" height="100" class="red-star">
+      <use href="#starIcon"/>
+    </svg>
+
+
+I recommend the first approach (applying fill within the symbol definition) for simplicity and reliability if the color is static. If you need dynamic coloring, CSS custom properties offer a flexible solution.
+
+Let me know if you'd like me to read the icons.svg file to see how the starIcon is defined, which might help us pinpoint the exact issue.
+
+
+SEE MORE    https://copilot.microsoft.com/chats/Gk7AudbUn9KQKaG6Q8ueq
